@@ -1,29 +1,23 @@
 import { db } from "~/server/db";
 
 export const dynamic = "force-dynamic";
-const mockUrls = [
-  "https://ys97tle9ee.ufs.sh/f/BHCOcEU0CItWsdAVRKfPvlOTAg21RpmuwIQe8JrMiZCXdczq",
-  "https://ys97tle9ee.ufs.sh/f/BHCOcEU0CItWo5aPWKSq19i3NnjT2zvFQoAk5bKSRcEX4MHD",
-];
-
-const mockImages = mockUrls.map((url, index) => ({
-  id: index + 1,
-  url,
-}));
 
 export default async function HomePage() {
-
-  const posts = await db.query.posts.findMany();
+  const images = await db.query.posts.findMany({
+    orderBy: (model, { desc }) => desc(model.id),
+  }); // Fetch images from the database
 
   return (
     <main className="p-4">
       <div className="flex flex-wrap gap-4">
-        {posts.map((post) => (
-          <div key = {post.id}>{post.name}</div>
-        ))}
-        {[...mockImages, ...mockImages, ...mockImages].map((image) => (
-          <div key={image.id} className="w-1/3 p-4">
-            <img src={image.url} alt={`Image ${image.id}`} className="w-full h-auto" />
+        {images.map((image, index) => (
+          <div key={`${image.id}-${index}`} className="w-48 text-center">
+            <img
+              src={image.url || "/placeholder.jpg"} // Use a placeholder if `image.url` is undefined
+              alt={image.name || "Image"} // Use `image.name` or a default alt text
+              className="w-full h-auto"
+            />
+            <p className="mt-2 text-sm text-white">{image.name || "Unnamed"}</p> {/* Display name */}
           </div>
         ))}
       </div>

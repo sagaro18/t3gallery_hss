@@ -13,10 +13,11 @@ import { index, pgTableCreator } from "drizzle-orm/pg-core";
 export const createTable = pgTableCreator((name) => `t3gallery_hss_${name}`);
 
 export const posts = createTable(
-  "post",
+  "image",
   (d) => ({
     id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
     name: d.varchar({ length: 256 }),
+    url : d.varchar("url", {length : 1024}).notNull(),
     createdAt: d
       .timestamp({ withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
@@ -25,3 +26,4 @@ export const posts = createTable(
   }),
   (t) => [index("name_idx").on(t.name)],
 );
+
