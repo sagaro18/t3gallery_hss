@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 const mockUrls = [
   "https://ys97tle9ee.ufs.sh/f/BHCOcEU0CItWsdAVRKfPvlOTAg21RpmuwIQe8JrMiZCXdczq",
   "https://ys97tle9ee.ufs.sh/f/BHCOcEU0CItWo5aPWKSq19i3NnjT2zvFQoAk5bKSRcEX4MHD",
@@ -10,17 +8,43 @@ const mockImages = mockUrls.map((url, index) => ({
   url,
 }));
 
-export default function HomePage() {
+export function HomePage() {
   return (
-    <main className="">
+    <main className="p-4">
       <div className="flex flex-wrap gap-4">
-        {mockImages.map((image) => (
-          <div key={image.id} className="w-1/2 p-4">
-            <img src={image.url} alt={`Image ${image.id}`} />
+        {[...mockImages, ...mockImages, ...mockImages].map((image) => (
+          <div key={image.id} className="w-1/3 p-4">
+            <img src={image.url} alt={`Image ${image.id}`} className="w-full h-auto" />
           </div>
         ))}
       </div>
-      Hello (gallery in progress)
+      <p className="text-center mt-4">Hello (gallery in progress)</p>
     </main>
+  );
+}
+
+function TopNav() {
+  return (
+    <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
+      <div>Gallery</div>
+
+      <div> Sign in </div>
+    </nav>
+  );
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body className="font-sans ${inter.variable} flex flex-col gap-4">
+        <TopNav />
+        <HomePage />
+        {children}
+      </body>
+    </html>
   );
 }
