@@ -1,5 +1,6 @@
 import { db } from "~/server/db";
 
+export const dynamic = "force-dynamic";
 const mockUrls = [
   "https://ys97tle9ee.ufs.sh/f/BHCOcEU0CItWsdAVRKfPvlOTAg21RpmuwIQe8JrMiZCXdczq",
   "https://ys97tle9ee.ufs.sh/f/BHCOcEU0CItWo5aPWKSq19i3NnjT2zvFQoAk5bKSRcEX4MHD",
@@ -20,7 +21,7 @@ export default async function HomePage() {
         {posts.map((post) => (
           <div key = {post.id}>{post.name}</div>
         ))}
-        {[mockImages].map((image) => (
+        {[...mockImages, ...mockImages, ...mockImages].map((image) => (
           <div key={image.id} className="w-1/3 p-4">
             <img src={image.url} alt={`Image ${image.id}`} className="w-full h-auto" />
           </div>
