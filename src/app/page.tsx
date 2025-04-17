@@ -8,7 +8,7 @@ const mockImages = mockUrls.map((url, index) => ({
   url,
 }));
 
-export function HomePage() {
+export default function HomePage() {
   return (
     <main className="p-4">
       <div className="flex flex-wrap gap-4">
@@ -20,31 +20,5 @@ export function HomePage() {
       </div>
       <p className="text-center mt-4">Hello (gallery in progress)</p>
     </main>
-  );
-}
-
-function TopNav() {
-  return (
-    <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
-      <div>Gallery</div>
-
-      <div> Sign in </div>
-    </nav>
-  );
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body className="font-sans ${inter.variable} flex flex-col gap-4">
-        <TopNav />
-        <HomePage />
-        {children}
-      </body>
-    </html>
   );
 }
