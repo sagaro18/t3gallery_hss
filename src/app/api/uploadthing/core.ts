@@ -8,11 +8,7 @@ const f = createUploadthing();
 
 export const ourFileRouter = {
   imageUploader: f({
-    // Either use the shorthand... 
-    image: { maxFileSize: "4MB", maxFileCount: 1 },
-    // ...or explicitly list MIME types instead:
-    // "image/png":  { maxFileSize: "4MB", maxFileCount: 1 },
-    // "image/jpeg": { maxFileSize: "4MB", maxFileCount: 1 },
+    image: { maxFileSize: "4MB", maxFileCount: 10 },
   })
   .middleware<{ userId: string }>(async () => {
     const { userId } = await auth();
@@ -26,6 +22,7 @@ export const ourFileRouter = {
       await db.insert(posts).values({
         name: file.name,
         url:  file.url,
+        userId: metadata.userId,
       });
       console.log("✅ Row inserted");
     } catch (err) {
