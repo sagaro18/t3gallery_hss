@@ -21,7 +21,7 @@ export const ourFileRouter = {
     try {
       await db.insert(posts).values({
         name: file.name,
-        url:  file.url,
+        url:  file.ufsUrl,
         userId: metadata.userId,
       });
       console.log("✅ Row inserted");
