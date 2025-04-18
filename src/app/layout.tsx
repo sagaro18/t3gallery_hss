@@ -1,3 +1,4 @@
+import "@uploadthing/react/styles.css";
 import TopNav from "~/app/_components/topnav"; 
 import "~/styles/globals.css";
 
