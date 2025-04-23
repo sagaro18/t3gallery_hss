@@ -34,9 +34,11 @@ export default function RootLayout({
         <NextSSRPlugin 
           routerConfig = {extractRouterConfig(ourFileRouter)}
         />
-        <body className="font-sans bg-black text-white">
-          <TopNav />
-          {children}
+        <body className="font-sans ${inter.variable}">
+          <div className = "grid h-screen grid-rows-[auto_1fr]">
+            <TopNav />
+            <main className = "overflow-y-scroll">{children}</main>
+          </div>
           {modal}
           <div id = "modal-root" />
         </body>
