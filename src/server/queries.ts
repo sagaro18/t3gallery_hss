@@ -11,3 +11,15 @@ export async function getMyImages() {
   });
   return images;
 }
+
+export async function getImage(id: number) {
+    const { userId } = await auth(); 
+    if (!userId) throw new Error("Unauthorized");
+    const image = await db.query.posts.findFirst({
+      where: (model, { eq }) => eq(model.id, id),
+    });
+  
+    if (!image) throw new Error("Image not found");
+    if (image.userId !== userId) throw new Error("Unauthorized");
+    return image;
+  }
