@@ -15,6 +15,14 @@ export const ourFileRouter = {
     const { userId } = await auth();
     console.log("🔑 Clerk userId:", userId);
     if (!userId) throw new UploadThingError("Unauthorized");
+    const clerk = await clerkClient();
+    const fullUserData = await clerk.users.getUser(userId);
+
+    if (fullUserData?.privateMetadata?.["can-upload"] !== true)
+      throw new UploadThingError("User Does Not Have Upload Permissions");
+
+    const { success } = await ratelimit.limit(userId);
+    if (!success) throw new UploadThingError("Ratelimited");
     return { userId };
   })
   .onUploadComplete(async ({ metadata, file }) => {
