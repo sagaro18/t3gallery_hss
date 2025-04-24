@@ -1,6 +1,6 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError }      from "uploadthing/server";
-import { auth }                  from "@clerk/nextjs/server";
+import { auth, clerkClient }                  from "@clerk/nextjs/server";
 import { db }                    from "~/server/db";
 import { posts }                 from "~/server/db/schema";
 import { ratelimit } from "~/server/ratelimit";
@@ -15,10 +15,6 @@ export const ourFileRouter = {
     const { userId } = await auth();
     console.log("🔑 Clerk userId:", userId);
     if (!userId) throw new UploadThingError("Unauthorized");
-    const { success } = await ratelimit.limit(userId);
-    if (!success) {
-      throw new UploadThingError("Rate limit exceeded");
-    }
     return { userId };
   })
   .onUploadComplete(async ({ metadata, file }) => {
