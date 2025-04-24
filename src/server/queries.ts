@@ -1,6 +1,10 @@
 import "server-only";
 import { db } from "~/server/db";
 import { auth } from "@clerk/nextjs/server";
+import { and, eq } from "drizzle-orm";
+import { posts } from "~/server/db/schema";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function getMyImages() {
   const { userId } = await auth(); // Destructure userId directly
@@ -23,3 +27,10 @@ export async function getImage(id: number) {
     if (image.userId !== userId) throw new Error("Unauthorized");
     return image;
   }
+
+export async function deleteImage(id: number) {
+  const { userId } = await auth(); 
+  if (!userId) throw new Error("Unauthorized");
+  await db.delete(posts).where(and(eq(posts.id, id), eq(posts.userId, userId)));
+  redirect("/"); // Redirect to the home page
+}
