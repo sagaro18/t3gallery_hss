@@ -5,6 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { posts } from "~/server/db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import analyticsServerClient from "./analytics";
 
 export async function getMyImages() {
   const { userId } = await auth(); // Destructure userId directly
@@ -32,5 +33,12 @@ export async function deleteImage(id: number) {
   const { userId } = await auth(); 
   if (!userId) throw new Error("Unauthorized");
   await db.delete(posts).where(and(eq(posts.id, id), eq(posts.userId, userId)));
+  analyticsServerClient.capture({
+    distinctId: userId,
+    event: "Image Deleted",
+    properties: {
+      imageId: id,
+  }
+  });
   redirect("/"); // Redirect to the home page
 }
