@@ -11,17 +11,22 @@ async function Images() {
   return (
     <div className="flex flex-wrap justify-center gap-4 p-4">
       {images.map((image) => (
-        <div key={image.id} className="flex h-48 w-48 flex-col">
+        <div
+          key={image.id}
+          className="w-48 h-48 flex-shrink-0 flex flex-col"
+        >
           <Link href={`/img/${image.id}`}>
-            <Image
-              src={image.url}
-              style={{ objectFit: "contain" }}
-              width={192}
-              height={192}
-              alt={image.name || "Display image"}
-            />
+            <div className="relative w-full h-48">
+              <Image
+                src={image.url}
+                alt={image.name ?? "Image"}
+                fill                    // fill the parent div
+                style={{ objectFit: "contain" }}
+                unoptimized             // skip Next’s image loader if you prefer
+              />
+            </div>
           </Link>
-          <div>{image.name}</div>
+          <div className="truncate text-sm text-center">{image.name}</div>
         </div>
       ))}
     </div>
